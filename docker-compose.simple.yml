@@ -1,0 +1,39 @@
+# Simplified Docker Compose for Production
+
+services:
+  # Combined Backend + Blockchain Service
+  agritrace-backend:
+    build:
+      context: ./blockchain/backend
+      dockerfile: Dockerfile
+    container_name: agritrace-backend
+    ports:
+      - "8000:8000"
+      - "8545:8545"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - BLOCKCHAIN_URL=http://localhost:8545
+      - RPC_URL=http://127.0.0.1:8545
+    volumes:
+      - agritrace_data:/app/data
+    restart: unless-stopped
+
+  # Frontend Service
+  agritrace-frontend:
+    build:
+      context: ./agritrace-app
+      dockerfile: Dockerfile
+    container_name: agritrace-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - agritrace-backend
+    restart: unless-stopped
+
+volumes:
+  agritrace_data:
+    driver: local

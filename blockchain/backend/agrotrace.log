@@ -1,0 +1,109 @@
+nohup: ignoring input
+[dotenv@17.2.2] injecting env (4) from ../.env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+Connected to provider at http://127.0.0.1:8545
+🚀 AgroTrace Server running at http://localhost:3000
+📊 Dashboard: http://localhost:3000/api/dashboard/stats
+🔍 API Endpoints:
+   - GET /api/farmers - List all farmers
+   - GET /api/products - List all products
+   - GET /api/trace/:productId - Trace product journey
+   - GET /api/blockchain-trace/:productId - Blockchain trace
+   - POST /api/supply-chain-event - Add new event
+   - GET /api/qr/:productId - Generate QR code data
+🌱 Loading agricultural seed data...
+📦 Seed data already exists, skipping loading
+📊 Current blockchain has 2 blocks
+Latest index bn :  1n 
+ Latest index :  1
+Block data of block  0 :  Result(4) [
+  1759080170n,
+  'Genesis Block',
+  115792089237316195423570985008687907853269984665640564039457584007913129639935n,
+  Result(1) [ 1n ]
+]
+mapped children :  [ 1n ]
+Block data of block  1 :  Result(4) [
+  1759080187n,
+  '{"type":"farmer_profile","farmerId":"F001","name":"Rajesh Kumar","location":"Punjab, India","crops":["Wheat","Rice","Corn"],"farmSize":"15 hectares","certification":"Organic Certified","contactInfo":"+91-98765-43210"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Latest index bn :  9n 
+ Latest index :  9
+Block data of block  0 :  Result(4) [
+  1759081020n,
+  'Genesis Block',
+  115792089237316195423570985008687907853269984665640564039457584007913129639935n,
+  Result(9) [
+    1n, 2n, 3n, 4n, 5n,
+    6n, 7n, 8n, 9n
+  ]
+]
+mapped children :  [
+  1n, 2n, 3n, 4n, 5n,
+  6n, 7n, 8n, 9n
+]
+Block data of block  1 :  Result(4) [
+  1759081030n,
+  '{"type":"farmer_profile","farmerId":"F001","name":"Rajesh Kumar","location":"Punjab, India","crops":["Wheat","Rice","Corn"],"farmSize":"15 hectares","certification":"Organic Certified","contactInfo":"+91-98765-43210"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  2 :  Result(4) [
+  1759081031n,
+  '{"type":"farmer_profile","farmerId":"F002","name":"Priya Sharma","location":"Karnataka, India","crops":["Tomatoes","Carrots","Lettuce"],"farmSize":"8 hectares","certification":"GAP Certified","contactInfo":"+91-87654-32109"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  3 :  Result(4) [
+  1759081032n,
+  '{"type":"product_info","productId":"P001","name":"Organic Cherry Tomatoes","variety":"Cherry Roma","farmerId":"F002","plantingDate":"2024-01-15","harvestDate":"2024-04-20","quantity":"500 kg","qualityGrade":"Premium A","certifications":["Organic","Non-GMO"],"location":"Karnataka, India"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  4 :  Result(4) [
+  1759081033n,
+  '{"type":"product_info","productId":"P002","name":"Fresh Wheat Grain","variety":"Durum Wheat","farmerId":"F001","plantingDate":"2023-11-01","harvestDate":"2024-05-15","quantity":"2000 kg","qualityGrade":"Grade 1","certifications":["Organic"],"location":"Punjab, India"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  5 :  Result(4) [
+  1759081034n,
+  '{"type":"product_info","productId":"P003","name":"Rainbow Carrots","variety":"Multicolor Heritage","farmerId":"F002","plantingDate":"2024-02-01","harvestDate":"2024-06-10","quantity":"800 kg","qualityGrade":"Premium A","certifications":["Organic","Heirloom"],"location":"Karnataka, India"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  6 :  Result(4) [
+  1759081035n,
+  '{"type":"supply_chain_event","productId":"P001","stage":"Farm","timestamp":"2024-04-20T08:00:00Z","location":"Kumar Organic Farm, Karnataka","actor":"Priya Sharma","action":"Harvested","temperature":"22°C","humidity":"65%","notes":"Fresh harvest, premium quality tomatoes"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  7 :  Result(4) [
+  1759081036n,
+  '{"type":"supply_chain_event","productId":"P001","stage":"Processing","timestamp":"2024-04-20T14:30:00Z","location":"Fresh Pack Processing Unit","actor":"Processing Team A","action":"Washed & Packaged","temperature":"4°C","humidity":"80%","notes":"Washed with filtered water, packaged in eco-friendly containers"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  8 :  Result(4) [
+  1759081037n,
+  '{"type":"supply_chain_event","productId":"P001","stage":"Distribution","timestamp":"2024-04-21T06:00:00Z","location":"GreenFresh Distribution Center","actor":"Distributor D001","action":"Quality Check & Dispatch","temperature":"4°C","humidity":"75%","notes":"Quality approved, dispatched to retail locations"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []
+Block data of block  9 :  Result(4) [
+  1759081038n,
+  '{"type":"supply_chain_event","productId":"P001","stage":"Retail","timestamp":"2024-04-21T16:00:00Z","location":"FreshMart Supermarket, Bangalore","actor":"Store Manager","action":"Received & Displayed","temperature":"6°C","humidity":"70%","notes":"Products displayed in refrigerated section"}',
+  0n,
+  Result(0) []
+]
+mapped children :  []

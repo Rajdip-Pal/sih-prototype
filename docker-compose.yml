@@ -1,0 +1,92 @@
+# AgriTrace - Agricultural Supply Chain Traceability System
+# Complete Docker Setup for Production & Development
+
+services:
+  # Hardhat Blockchain Network
+  blockchain:
+    build:
+      context: ./blockchain/hard-hat
+      dockerfile: Dockerfile
+    container_name: agritrace-blockchain
+    ports:
+      - "8545:8545"
+    networks:
+      - agritrace-network
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - blockchain_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8545"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./blockchain/backend
+      dockerfile: Dockerfile
+    container_name: agritrace-backend
+    ports:
+      - "8000:8000"
+    networks:
+      - agritrace-network
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - BLOCKCHAIN_URL=http://blockchain:8545
+      - CORS_ORIGIN=http://frontend:3000,http://localhost:3001
+    depends_on:
+      blockchain:
+        condition: service_healthy
+    volumes:
+      - ./blockchain/backend:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/products"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Next.js App
+  frontend:
+    build:
+      context: ./agritrace-app
+      dockerfile: Dockerfile
+    container_name: agritrace-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - agritrace-network
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_BLOCKCHAIN_URL=http://localhost:8545
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./agritrace-app:/app
+      - /app/node_modules
+      - /app/.next
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  agritrace-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  blockchain_data:
+    driver: local

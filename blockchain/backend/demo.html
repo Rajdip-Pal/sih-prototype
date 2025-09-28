@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroTrace - Agricultural Supply Chain Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-card h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .demo-card button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px 5px 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .demo-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-card input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .demo-card input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .result-container {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-container pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+
+        .error {
+            color: #e53e3e;
+            background: #fed7d7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: #38a169;
+            background: #c6f6d5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .quick-links {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-links h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .quick-links a {
+            display: block;
+            padding: 10px 15px;
+            background: #f7fafc;
+            text-decoration: none;
+            color: #4a5568;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quick-links a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 AgroTrace</h1>
+            <p>Agricultural Supply Chain Traceability Demo</p>
+        </div>
+
+        <div class="quick-links">
+            <h3>🔗 Quick API Links</h3>
+            <div class="links-grid">
+                <a href="/api/farmers" target="_blank">👨‍🌾 All Farmers</a>
+                <a href="/api/products" target="_blank">🥕 All Products</a>
+                <a href="/api/dashboard/stats" target="_blank">📊 Dashboard Stats</a>
+                <a href="/fullchain" target="_blank">⛓️ Full Blockchain</a>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h3>🔍 Product Trace</h3>
+                <p>Trace a product's journey from farm to table</p>
+                <input type="text" id="traceProductId" placeholder="Enter Product ID (e.g., P001)" value="P001">
+                <button onclick="traceProduct()">Trace Product</button>
+                <button onclick="blockchainTrace()">Blockchain Trace</button>
+                <div id="traceResult" class="result-container" style="display:none;"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>👨‍🌾 Farmer Information</h3>
+                <p>Get detailed farmer profiles</p>
+                <input type="text" id="farmerId" placeholder="Enter Farmer ID (e.g., F001)" value="F001">
+                <button onclick="getFarmer()">Get Farmer</button>
+                <button onclick="getAllFarmers()">All Farmers</button>
+                <div id="farmerResult" class="result-container" style="display:none;"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>📦 Supply Chain Event</h3>
+                <p>Add new supply chain events</p>
+                <input type="text" id="eventProductId" placeholder="Product ID" value="P001">
+                <input type="text" id="eventStage" placeholder="Stage (e.g., Processing)" value="Packaging">
+                <input type="text" id="eventAction" placeholder="Action" value="Quality Check">
+                <input type="text" id="eventLocation" placeholder="Location" value="Processing Center">
+                <input type="text" id="eventActor" placeholder="Actor" value="Quality Team">
+                <button onclick="addSupplyChainEvent()">Add Event</button>
+                <div id="eventResult" class="result-container" style="display:none;"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>📊 Dashboard Stats</h3>
+                <p>View overall system statistics</p>
+                <button onclick="getDashboardStats()">Load Stats</button>
+                <button onclick="getBlockchainStats()">Blockchain Stats</button>
+                <div id="statsResult" class="result-container" style="display:none;"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>🏷️ QR Code Generator</h3>
+                <p>Generate QR code data for products</p>
+                <input type="text" id="qrProductId" placeholder="Product ID" value="P001">
+                <button onclick="generateQR()">Generate QR Data</button>
+                <div id="qrResult" class="result-container" style="display:none;"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>🥕 Products</h3>
+                <p>Browse all available products</p>
+                <button onclick="getAllProducts()">Load All Products</button>
+                <button onclick="getOrganicProducts()">Organic Products Only</button>
+                <div id="productsResult" class="result-container" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, options);
+                const data = await response.json();
+                return { success: response.ok, data };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function showResult(containerId, data, loading = false) {
+            const container = document.getElementById(containerId);
+            container.style.display = 'block';
+
+            if (loading) {
+                container.innerHTML = '<div class="loading">Loading...</div>';
+                return;
+            }
+
+            container.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        async function traceProduct() {
+            const productId = document.getElementById('traceProductId').value;
+            if (!productId) return;
+
+            showResult('traceResult', null, true);
+            const result = await makeRequest(`/api/trace/${productId}`);
+            showResult('traceResult', result);
+        }
+
+        async function blockchainTrace() {
+            const productId = document.getElementById('traceProductId').value;
+            if (!productId) return;
+
+            showResult('traceResult', null, true);
+            const result = await makeRequest(`/api/blockchain-trace/${productId}`);
+            showResult('traceResult', result);
+        }
+
+        async function getFarmer() {
+            const farmerId = document.getElementById('farmerId').value;
+            if (!farmerId) return;
+
+            showResult('farmerResult', null, true);
+            const result = await makeRequest(`/api/farmers/${farmerId}`);
+            showResult('farmerResult', result);
+        }
+
+        async function getAllFarmers() {
+            showResult('farmerResult', null, true);
+            const result = await makeRequest('/api/farmers');
+            showResult('farmerResult', result);
+        }
+
+        async function addSupplyChainEvent() {
+            const event = {
+                productId: document.getElementById('eventProductId').value,
+                stage: document.getElementById('eventStage').value,
+                action: document.getElementById('eventAction').value,
+                location: document.getElementById('eventLocation').value,
+                actor: document.getElementById('eventActor').value,
+                temperature: '4°C',
+                humidity: '70%',
+                notes: 'Added via demo interface'
+            };
+
+            showResult('eventResult', null, true);
+            const result = await makeRequest('/api/supply-chain-event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(event)
+            });
+            showResult('eventResult', result);
+        }
+
+        async function getDashboardStats() {
+            showResult('statsResult', null, true);
+            const result = await makeRequest('/api/dashboard/stats');
+            showResult('statsResult', result);
+        }
+
+        async function getBlockchainStats() {
+            showResult('statsResult', null, true);
+            const result = await makeRequest('/fullchain');
+            showResult('statsResult', result);
+        }
+
+        async function generateQR() {
+            const productId = document.getElementById('qrProductId').value;
+            if (!productId) return;
+
+            showResult('qrResult', null, true);
+            const result = await makeRequest(`/api/qr/${productId}`);
+            showResult('qrResult', result);
+        }
+
+        async function getAllProducts() {
+            showResult('productsResult', null, true);
+            const result = await makeRequest('/api/products');
+            showResult('productsResult', result);
+        }
+
+        async function getOrganicProducts() {
+            showResult('productsResult', null, true);
+            const result = await makeRequest('/api/products');
+            if (result.success && result.data.products) {
+                const organicProducts = result.data.products.filter(p =>
+                    p.certifications && p.certifications.includes('Organic')
+                );
+                showResult('productsResult', {
+                    success: true,
+                    count: organicProducts.length,
+                    products: organicProducts
+                });
+            } else {
+                showResult('productsResult', result);
+            }
+        }
+
+        // Auto-load dashboard stats on page load
+        window.onload = () => {
+            getDashboardStats();
+        };
+    </script>
+</body>
+
+</html>
